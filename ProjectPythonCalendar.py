@@ -15,7 +15,6 @@ list_of_events = []
 
 def get_text_from(message):
     date_from_message = [i for i in message.text.split(',')]
-    print(date_from_message)
 
 
 @bot.message_handler(commands=['start'])
@@ -26,8 +25,8 @@ def start_of_bot(message):
                    '1) you need to add your credentials\n' \
                    'You can control me using these commands\n\n/' \
                    '/start-to start chatting with the bot\n' \
-                   '/help-to get more information about bot.\n\n' \
-                   '/geteventsid - write to get events id'
+                   '/geteventsid - write to get events id' \
+                   'To create write message in format Example: example@example.com,1,11,2023,13:00,train'
     bot.send_message(chat_id, text_message)
     # my_calendar.create_event(2023, 12, 11, 'fortrexofer@gmail.com')
 
@@ -38,11 +37,10 @@ def text_from_message(message):
     msg_str = []
     for i in string.split(','):
         msg_str.append(i)
-        print(msg_str)
     my_calendar.My_calendar(f"{message.chat.id}.json").create_event(int(msg_str[3]), int(msg_str[1]), int(msg_str[2]),
                                                                     int(msg_str[4].split(":")[0]),
                                                                     msg_str[0], msg_str[5])
-    print(list_of_events)
+
 
 
 @bot.message_handler(commands=['create'])
@@ -53,12 +51,7 @@ def create_event(message):
     bot.send_message(chat_id, text_message)
 
 
-def check_text(text):
-    text1 = 'for deleting an event write event id'
-    if text1 in text:
-        return True
-    else:
-        return False
+
 
 
 def message_return(message):
@@ -67,9 +60,7 @@ def message_return(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def delete_event(message):
-    print('1s')
-    print(message.message.json['reply_markup']['inline_keyboard'][0][0]['text'].replace("'", ''))
-    if my_calendar.My_calendar(f"{message.chat.id}.json").delete_event(
+    if my_calendar.My_calendar(f"{message.message.json['chat']['id']}.json").delete_event(
             message.message.json['reply_markup']['inline_keyboard'][0][0]['text'].replace("'", '')):
         bot.send_message(message.message.json['chat']['id'], 'delete successful')
     else:
@@ -82,7 +73,6 @@ def geteventsid(message):
     text_message = ''
     markup = telebot.types.InlineKeyboardMarkup()
     for i in my_calendar.My_calendar(f"{message.chat.id}.json").get_list_of_events():
-        print(str(i).split(' ')[-1].replace('}', ''))
         text_message += str(i).split(' ')[-1].replace('}', '')
         button = telebot.types.InlineKeyboardButton(text_message, callback_data='unseen')
         markup.add(button)
@@ -91,7 +81,7 @@ def geteventsid(message):
 
 def check_is_jsoncreated(message):
     if os.path.isfile(f"{message.chat.id}.json"):
-        print(True)
+        return True
     else:
         with open(f"{message.chat.id}.json", "w") as to_file:
             json.dump({}, to_file)

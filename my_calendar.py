@@ -73,7 +73,8 @@ class My_calendar:
         events = events_result.get('items', [])
 
         if not events:
-            print('No upcoming events found.')
+            pass
+            # print('No upcoming events found.')
         for event in events:
             start = event['start'].get('dateTime', event['start'].get('date'))
             a = {event['summary']: event['id']}
@@ -102,11 +103,7 @@ class My_calendar:
                                            }
                                            ).execute()
 
-        print("created events")
-        print("id: ", event_result['id'])
-        print("summary: ", event_result['summary'])
-        print("starts at: ", event_result['start']['dateTime'])
-        print("ends at: ", event_result['end']['dateTime'])
+
 
 
     def delete_event(self,id_eventid):
@@ -118,7 +115,5 @@ class My_calendar:
                 eventId=str(id_eventid),
             ).execute()
         except googleapiclient.errors.HttpError:
-            print(id_eventid)
-            print("Failed to delete event")
             return False
         return True
