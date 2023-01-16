@@ -102,7 +102,7 @@ class My_calendar:
                                            }
                                            ).execute()
 
-        print("created events")
+        print("created event")
         print("id: ", event_result['id'])
         print("summary: ", event_result['summary'])
         print("starts at: ", event_result['start']['dateTime'])
