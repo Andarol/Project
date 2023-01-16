@@ -67,7 +67,7 @@ def message_return(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def delete_event(message):
-    print('1')
+    print('1s')
     print(message.message.json['reply_markup']['inline_keyboard'][0][0]['text'].replace("'", ''))
     if my_calendar.My_calendar(f"{message.chat.id}.json").delete_event(
             message.message.json['reply_markup']['inline_keyboard'][0][0]['text'].replace("'", '')):
