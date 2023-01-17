@@ -53,7 +53,7 @@ class My_calendar:
         calendars = calendars_result.get('items', [])
 
         if not calendars:
-            print('No calendars founsd.')
+            print('No calendars found.')
         for calendar in calendars:
             summary = calendar['summary']
             id = calendar['id']
